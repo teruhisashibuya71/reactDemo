@@ -1,0 +1,22 @@
+.memo-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .memo-header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .memo-main {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .memo-footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+  }

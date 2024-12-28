@@ -1,0 +1,24 @@
+.memo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin: 20px auto;
+  }
+  
+  .memo-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .memo-list li {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .memo-list li h3 {
+    margin-top: 0;
+  }
