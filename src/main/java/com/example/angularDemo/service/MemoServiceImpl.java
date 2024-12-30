@@ -21,6 +21,7 @@ public class MemoServiceImpl implements MemoService {
     /** RequiredArgsConstructorで対応する場合は「final」 付与すること */
     private final MemoRepository memoRepository;
 
+    @Override
     public List<Memo> getAllMemos() {
         return memoRepository.findAll();
     }
@@ -33,6 +34,7 @@ public class MemoServiceImpl implements MemoService {
      * @param id
      * @return
      */
+    @Override
     public Memo getMemoById(Long id) {
         return memoRepository.findById(id).orElse(null);
     }
