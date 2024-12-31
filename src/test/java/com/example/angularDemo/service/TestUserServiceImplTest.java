@@ -70,6 +70,4 @@ public class TestUserServiceImplTest {
         assertEquals("testUser1", usetList.get(0).getName());
         assertEquals("testUser2", usetList.get(1).getName());
     }
-
-    
 }

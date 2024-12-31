@@ -1,6 +1,8 @@
 package com.example.angularDemo.service;
 
 import java.util.List;
+
+import com.example.angularDemo.controller.form.UserForm;
 import com.example.angularDemo.model.TestUser;
 
 /**
@@ -12,11 +14,15 @@ public interface TestUserService {
     
     public List<TestUser> getAllUsers();
 
+    public TestUser createUser(UserForm user);
+
+    public void deleteUser(Long id);
+
+
     // public User getUserById(Long id);
 
-    // public User createUser(User user);
 
     // public User updateUser(Long id, User newUser);
 
-    // public User delteUser(Long id);
+    
 }
