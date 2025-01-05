@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>thymeleafの各種処理テスト</title>
+</head>
+
+<p th:text="${switchValue}">switchValue</p>
+
+<!-- <div th:switch="${switchValue}"> -->
+
+<!--/* スイッチ用の値の確認 */-->
+<div th:switch="${switchValue.toString()}">
+
+    <div th:case="if">
+        <h1>th:ifのテスト</h1>
+
+        <div th:if="${boo}">
+            <p>booの値はTRUEです</p>
+        </div>
+        <div th:unless="${boo}">
+            <p>booの値はFALSEです</p>
+        </div>
+
+    </div>
+
+
+    <div th:case="format">
+        <h1>format(${T...})処理のテスト</h1>
+        <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(now)}"></p>
+        <p>メモの作成日時：<span th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></span> です</p>
+        <!--/* versionによっては以下の形式も java.timeが使えるthymeleafversionであれば */-->
+        <!-- <p>Current time: <span th:text="${createdAt != null ? #dates.format(createdAt, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></p> -->
+        
+        <!-- <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></p> -->
+        <!-- <p th:text="${#dates.format(cratedAt, 'yyyy-MM-dd HH:mm:ss')}"></p> -->
+    </div>
+
+
+<!--/* 長いのでenum側を調整 */-->
+<!-- <div th:case="=${T(com.example.angularDemo.utils.SwitchValue).MAP_TEST}"> -->
+<div th:case="map">
+    <h1>1.map出力テスト</h1>
+    <p th:text="${data.name}">Name</p>
+    <p th:text="${data.message}">Message</p>
+
+    <p th:text="${data.memo.id}">id</p>
+    <p th:text="${data.memo.content}">content</p>
+</div>
+
+<!--/* ２つ目の処理 */-->
+<div th:case="variable">
+    <h1>2.各種パラメータ取得テスト</h1>
+    <form th:action="@{/thymeleaftest/variable/1}" method="get">
+        <label for="content">contentを入力(Memoモデル)</label><br>
+        <input type="text" id="content" name="content"><br>
+
+        <label for="content">nameを入力(Memoモデル)</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <input type="submit" value="送信">
+    </form>
+</div>
+
+<!--/* 3つ目の処理 */-->
+<div th:case="variable_return">
+    <h1>3.取得したパラメータの出力</h1>
+    <p th:text="${id}"></p>
+    <p th:text="${content}"></p>
+    <p th:text="${name}"></p>
+</div>
+
+
+</div>

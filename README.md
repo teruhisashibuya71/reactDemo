@@ -1,5 +1,17 @@
+# 本プロジェクトの概要
+本プロジェクトはフロントがReact、バックエンドにspringBootを使用した練習用プロジェクトです。
+2025年の1月から開始するコミチのプロジェクトに参画するにあたり、必要な学習内容をまとめたものです。
+AWSで動かすことも目的の1つとしているため、AWSのソースも追加しています。
+
+
 # グレイドルのビルドコマンド
 ./gradlew build
+./gradlew clean build
+./gradlew clean build -x test
+
+
+# テストを実行しないビルドコマンド
+./gradlew build -x test
 
 
 
@@ -16,11 +28,20 @@ js jsx ts tsx
 
 # Reactの基本コマンド
 
+## アプリ起動
+npm start
+
 ## version確認
 npm list react
 ※関連するパッケージのバージョンも表示される。
  なお、本プロジェクトのバージョンは19.0.0
 
 
+## このファイルのpreview
+shift + ⌘ + v
+
+
+## インデント統一
+shift + ⌥ + F
 
 

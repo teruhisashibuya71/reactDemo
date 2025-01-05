@@ -72,6 +72,7 @@ public class MemoController {
 
     /**
      * メモの新規登録処理
+     * http://localhost:8080/api/memo/create
      * 
      * @param memo メモ（フォーム入力値）
      * @return ステータスコード201 生成成功

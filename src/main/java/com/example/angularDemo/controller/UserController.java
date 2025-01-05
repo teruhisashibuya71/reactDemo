@@ -84,6 +84,7 @@ public class UserController {
     
     /**
      * ユーザー削除
+     * リクエストボディで値を受け取る形式
      * 
      * @param id
      * @return
@@ -99,8 +100,15 @@ public class UserController {
     // }
 
 
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id){
+/**
+     * ユーザー削除
+     * パスパラメーター形式
+     * 
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete/{ID}")
+    public String deleteUser(@PathVariable("ID") Long id){
 
         // 登録処理を実行
         userService.deleteUser(id);

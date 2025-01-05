@@ -40,3 +40,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// WARファイルの生成設定
+war {
+    archiveFileName = 'react-demo.war' // 生成するWARファイル名
+}
