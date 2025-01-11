@@ -3,15 +3,15 @@
 
 
 ## ブランチ一覧
-ローカル
+### ローカルブランチ一覧
 ```
 git bracnh
 ```
-リモート
+### リモートブランチ一覧
 ```
 git branch -r
 ```
-全部
+### どちらもすべて一覧
 ```
 git branch -a
 ```
@@ -31,7 +31,7 @@ git status
 新規追加されたファイルも含めて表示。
 内容がやや確認しづらい。
 
-表示例
+### 表示例
 ```
 tspc:reactDemo ts$ git status
 On branch master
@@ -48,13 +48,24 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
 
-## ブランチ名の変更
+# ブランチ名の変更・修正・削除
+
+## ブランチの修正
 ```
 git branch -m 古い名前 新しい名前
 git branch -m shibuya-fix feature/switching-usertype
 ```
-すでにリモートにプッシュしてしまった場合は削除するしかない
+
 ## リモートブランチの削除コマンド
+間違った名前でリモートにプッシュしてしまった場合は削除するしかない
+削除コマンドは落ち着いて実行すること
+```
+git push origin --delete ブランチ名
+git push origin --delete shibuya-fix
 ```
 
+## 新しいブランチをプッシュ
 ```
+git push origin feature/switching-usertype
+```
+ローカル・リモートともに修正が完了します。

@@ -4,6 +4,11 @@
 AWSで動かすことも目的の1つとしているため、AWSのソースも追加しています。
 
 
+# RepositoryのURL
+```
+https://github.com/teruhisashibuya71/reactDemo/branches
+```
+
 # グレイドルのビルドコマンド
 ./gradlew build
 ./gradlew clean build
