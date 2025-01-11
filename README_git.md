@@ -46,3 +46,15 @@ Untracked files:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
+
+
+## ブランチ名の変更
+```
+git branch -m 古い名前 新しい名前
+git branch -m shibuya-fix feature/switching-usertype
+```
+すでにリモートにプッシュしてしまった場合は削除するしかない
+## リモートブランチの削除コマンド
+```
+
+```
