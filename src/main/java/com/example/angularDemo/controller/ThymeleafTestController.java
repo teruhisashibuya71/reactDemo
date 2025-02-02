@@ -169,11 +169,28 @@ public class ThymeleafTestController {
     @GetMapping("/classappend")
     public String checkClassAppend(Model model) {
 
-        // 
         model.addAttribute("testClassAppend", "testClassAppend");
         
         //model.addAttribute("appendTestValue", null);
         model.addAttribute("appendTestValue", "appendTestValue");
+        
+        return "thymeleaftest/index";
+    }
+
+    /**
+     * ⑦.変数の結合処理のテスト
+     * http://localhost:8080/thymeleaftest/variableunion
+     * 
+     * @param model
+     * @return
+     */
+    @GetMapping("/variableunion")
+    public String checkVariableUnion(Model model) {
+
+        model.addAttribute("myouji", "澁谷");
+        model.addAttribute("namae", "晶久");
+        
+        model.addAttribute("variableUnion", "variableUnion");
         
         return "thymeleaftest/index";
     }

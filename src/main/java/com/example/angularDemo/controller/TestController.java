@@ -30,7 +30,7 @@ public class TestController {
     @GetMapping("/")
     public String showHome() {
 
-        return "index";
+        return "home";
     }
     
 }
