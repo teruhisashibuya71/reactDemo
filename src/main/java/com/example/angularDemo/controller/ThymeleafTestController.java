@@ -196,5 +196,21 @@ public class ThymeleafTestController {
     }
 
 
+    /**
+     * ⑦.th:switch〜th:caseの練習
+     * http://localhost:8080/thymeleaftest/switchcase
+     * 
+     * @param model
+     * @return
+     */
+    @GetMapping("/switchcase")
+    public String testSwitchCase(Model model) {
+
+        model.addAttribute("testCase", "testCase");
+        
+        model.addAttribute("testCaseValue", 10);
+        
+        return "thymeleaftest/index";
+    }
     
 }

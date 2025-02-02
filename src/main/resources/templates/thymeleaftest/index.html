@@ -6,46 +6,39 @@
 </head>
 
 <div class="container">
-    <div th:if="${testIfs}">
+
+    <div th:if="${testIf}">
         <h3>①.th:ifの練習</h3>
-        <div th:case="if">
-            <h1>th:ifのテスト</h1>
-            <div th:if="${boo}">
-                <p>booの値はTRUEです</p>
-            </div>
-            <div th:unless="${boo}">
-                <p>booの値はFALSEです</p>
-            </div>
+        <div th:if="${boo}">
+            <p>booの値はTRUEです</p>
+        </div>
+        <div th:unless="${boo}">
+            <p>booの値はFALSEです</p>
         </div>
     </div>
 
     <div th:if="${testDateFormat}">
         <h3>②.DateTimeのフォーマット出力の確認</h3>
-        <div th:case="format">
-            <h1>format(${T...})処理のテスト</h1>
-            <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(now)}"></p>
-            <p>メモの作成日時：<span
-                    th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></span>
-                です</p>
-            <!--/* versionによっては以下の形式も java.timeが使えるthymeleafversionであれば */-->
-            <!-- <p>Current time: <span th:text="${createdAt != null ? #dates.format(createdAt, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></p> -->
+        <h1>format(${T...})処理のテスト</h1>
+        <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(now)}"></p>
+        <p>メモの作成日時：<span
+                th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></span>
+            です</p>
+        <!--/* versionによっては以下の形式も java.timeが使えるthymeleafversionであれば */-->
+        <!-- <p>Current time: <span th:text="${createdAt != null ? #dates.format(createdAt, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></p> -->
 
-            <!-- <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></p> -->
-            <!-- <p th:text="${#dates.format(cratedAt, 'yyyy-MM-dd HH:mm:ss')}"></p> -->
-        </div>
+        <!-- <p th:text="${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(createdAt)}"></p> -->
+        <!-- <p th:text="${#dates.format(cratedAt, 'yyyy-MM-dd HH:mm:ss')}"></p> -->
     </div>
 
 
     <div th:if="${mapTest}">
         <h3>③.Mapオブジェクトの出力動作確認 ${オブジェクト名.キー名}</h3>
-        <div th:case="map">
-            <h1>1.map出力テスト</h1>
-            <p th:text="${data.name}">Name</p>
-            <p th:text="${data.message}">Message</p>
-
-            <p th:text="${data.memo.id}">id</p>
-            <p th:text="${data.memo.content}">content</p>
-        </div>
+        <h1>1.map出力テスト</h1>
+        <p th:text="${data.name}">Name</p>
+        <p th:text="${data.message}">Message</p>
+        <p th:text="${data.memo.id}">id</p>
+        <p th:text="${data.memo.content}">content</p>
     </div>
 
 
@@ -62,14 +55,12 @@
         </form>
     </div>
     <div th:if="${formPostTest}">
-        <div th:case="variable_return">
-            <h2>④-2.取得したパラメータの出力</h2>
-            <p th:text="${id}"></p>
-            <p th:text="${content}"></p>
-            <p th:text="${name}"></p>
-        </div>
+        <h2>④-2.取得したパラメータの出力</h2>
+        <p th:text="${id}"></p>
+        <p th:text="${content}"></p>
+        <p th:text="${name}"></p>
     </div>
-    
+
 
     <div th:if="${testWith}">
         <h2>⑤.th:withの使い方確認</h2>
@@ -85,13 +76,24 @@
             <p>ディベロッパーツールでclass値を確認してください</p>
         </div>
     </div>
-    
+
 
     <div th:if="${variableUnion}">
         <h2>⑦.文字や変数の結合テスト</h2>
         <!--/* 変数同士は +で結合 文字列は シングルクォーテーで囲む */-->
         <p th:text="'名字と名前の変数結合:' + ${myouji} + ' ' + ${namae} + ' です'"></p>
     </div>
+
+    <div th:if="${testCase}">
+        <h2>⑦.th:caseのテスト</h2>
+        <div th:switch="${testCaseValue}">
+            <p th:case=1>1です</p>
+            <p th:case=2>2です</p>
+            <p th:case=3>3です</p>
+            <p th:case="*">それ以外です</p>
+        </div>
+    </div>
+
 
 </div>
 </div>
