@@ -4,6 +4,26 @@
 AWSで動かすことも目的の1つとしているため、AWSのソースも追加しています。
 
 
+# アプリケーションの起動
+## Gradleを使用した起動
+```
+gradle bootrun
+```
+※ビルドして実行される
+
+## jarファイルを叩く場合
+```
+java -jar build/lib/TestApp.jar
+```
+
+## 引数つきでjarファイルを叩く場合
+```
+java -jar build/lib/TestApp.jar --引数名=値 --引数名2=値2 
+```
+
+
+
+
 # RepositoryのURL
 ```
 https://github.com/teruhisashibuya71/reactDemo/branches
@@ -17,8 +37,6 @@ https://github.com/teruhisashibuya71/reactDemo/branches
 
 # テストを実行しないビルドコマンド
 ./gradlew build -x test
-
-
 
 
 

@@ -35,7 +35,7 @@ public class ThymeleafTestController {
 
 
     /**
-     * if文章の練習
+     * ①.if文章の練習
      * http://localhost:8080/thymeleaftest/if
      * 
      * @param model
@@ -47,7 +47,8 @@ public class ThymeleafTestController {
         Boolean boo = Boolean.TRUE;
         //Boolean boo = Boolean.FALSE;
         model.addAttribute("boo",boo);
-        model.addAttribute("switchValue", SwitchValue.IF);
+        //model.addAttribute("switchValue", SwitchValue.IF);
+        model.addAttribute("testIf","testIf");
 
         return "thymeleaftest/index";
     
@@ -70,17 +71,16 @@ public class ThymeleafTestController {
         Memo memo = memoService.getMemoById(1L);
         model.addAttribute("createdAt", memo.getCreatedAt());
         
-        model.addAttribute("switchValue", SwitchValue.FORMAT);
+        //model.addAttribute("switchValue", SwitchValue.FORMAT);
+        model.addAttribute("testDateFormat", "testDateFormat");
 
         return "thymeleaftest/index";
     
     }
 
 
-
     /**
-     * map
-     * 
+     * ③.map値の出力テスト
      * http://localhost:8080/thymeleaftest/map
      * 
      * @param model
@@ -98,32 +98,32 @@ public class ThymeleafTestController {
         data.put("memo", memo);
 
         model.addAttribute("data", data);
-        model.addAttribute("switchValue", SwitchValue.MAP);
+        model.addAttribute("mapTesat", "mapTest");
+        //model.addAttribute("switchValue", SwitchValue.MAP);
 
         return "thymeleaftest/index";
     }
 
     /**
-     * variable
-     * 
+     * ④.URL上の各種パラメータの取り扱いテスト
+     * フォーム表示(要在庫確認)のGETメソッド
      * http://localhost:8080/thymeleaftest/variable
-     * URL上の各種パラメータの取り扱い
      * 
      * @param model
      * @return
      */
     @GetMapping("/variable")
     public String variableTest(Model model) {
-
         // ぱらめーた送信用フォームを画面に表示させる
-        model.addAttribute("switchValue", SwitchValue.VARIABLE);
-
+        //model.addAttribute("switchValue", SwitchValue.VARIABLE);
+        model.addAttribute("formGetTest", "formGetTest");
         return "thymeleaftest/index";
     }
 
     /**
-     * variable
-     * URL上の各種パラメータの取得テスト
+     * ④-2.URL上の各種パラメータの取り扱いテスト
+     * フォーム入力値を扱うPOSTメソッド
+     * http://localhost:8080/thymeleaftest/variable
      * 
      * @param model
      * @return
@@ -138,9 +138,46 @@ public class ThymeleafTestController {
         model.addAttribute("content", content);
         model.addAttribute("name", name);
 
-        model.addAttribute("switchValue", SwitchValue.VARIABLE_RETURN);
+        //model.addAttribute("switchValue", SwitchValue.VARIABLE_RETURN);
+        model.addAttribute("formPostTest", "formPostTest");
 
         return "thymeleaftest/index";
     }
 
+    /**
+     * ⑤.th:withの使い方確認
+     * th:withの使い方をまとめた処理です。
+     * http://localhost:8080/thymeleaftest/with
+     * 
+     * @param model
+     * @return
+     */
+    @GetMapping("/with")
+    public String variableGetTest(Model model) {
+
+        model.addAttribute("testWith", "testWith");
+        return "thymeleaftest/index";
+    }
+
+    /**
+     * ⑥.th:classappendの使い方確認
+     * http://localhost:8080/thymeleaftest/classappend
+     * 
+     * @param model
+     * @return
+     */
+    @GetMapping("/classappend")
+    public String checkClassAppend(Model model) {
+
+        // 
+        model.addAttribute("testClassAppend", "testClassAppend");
+        
+        //model.addAttribute("appendTestValue", null);
+        model.addAttribute("appendTestValue", "appendTestValue");
+        
+        return "thymeleaftest/index";
+    }
+
+
+    
 }
