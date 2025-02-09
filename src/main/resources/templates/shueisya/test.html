@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!--/* Bootstrap導入 */-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>集英社のリンクページ作成テスト</title>
+</head>
+
+<h1>集英社のリンク</h1>
+<div class="container">
+
+
+    <!--/* ログイン・非ログインは簡易的に変数で処理 */-->
+    <div th:if="${!hasGuest}">
+
+        <!-- <p th:text="${isRimacomi}"></p> -->
+        <!--/* 非ログイン なおかつ `アクセス中のサイトがリマコミ` の場合 クラス名に目印となるクラス名を付与 */-->
+        <a class="btn btn-primary"
+            th:classappend="${isRimacomi eq TRUE} ? 'target-shueisya-login-link':'' "
+            href="https://shueisya.jp/signup">ログイン</a>
+
+        <!-- <div th:if="${isRimacomi"}>
+            <a class="btn btn-primary" th:href="">新規登録</a>
+        </div>
+    
+        <div th:if="${!isRimacomi"}>
+            <a class="btn btn-primary" th:href="https://shueisya.jp/signup">新規登録</a>
+        </div> -->
+    </div>
+</div>
+
+
+<script>
+
+    // ①.集英社のURLを作成するために必要な定数や要素を取得する.
+
+    // ①-1.ShueishaCallbackEnumの定義
+    const Collback = {
+        SIGNUP: "callbackSignUpUrl",
+        LOGIN: "callbackLoginUrl"
+        // ...
+        // ...
+        // ...
+    };
+
+    // ①-2.`shueishaUrl` 定数2つを用意 ログインとサインアップ
+    const ShueishaLink = {
+        LOGIN: "https//:shueisha.login.jp/",
+        SIGNUP: "https//:shueisha.signup.jp/"
+    };
+
+    // const shueishaLoginUrl = "https//:shueisha.login.jp/"
+    // const shueishaSignupUrl = "https//:shueisha.signup.jp/"
+
+    // ①-3.`domain`の生成 アクセス中のURLから取得する
+    let currentUrl = window.location.href;
+    let domain = new URL(currentUrl).hostname;
+    console.log("ドメインの値: " + domain); // 出力: rimacomiplus.jp
+
+    // ①-4.mailaddressどうするのか? セキュリティできなものも含めて
+    // 今回はsingup / siginin の話だから考慮なし？
+
+    // ①-5.`referrer` (リダイレクト先)の生成
+    // 今回の件に関して言えば、reffererの中身は現在アクセス中のURLの値で問題ない
+    let refferer = currentUrl;
+
+
+    // ①-6.`codechallenge` の生成 以下3行をjsの処理に書き換え 長いのでメソッドにする
+    // String codeVerifier = PlceUtil.generateCodeVerifier(BooksConst.RIMACOMI_CODE_VERIFIER_LENGTH); → この定数は後ほど確認する
+    // session.setAttribute("code_verifier", codeVerifier);
+    // codeChallenge = PlceUtil.generateCodeChallenge(codeVerifier);
+
+    // `codechallenge` の生成は処理が長いのでメソッド化
+    function generateCodeChallenge() {
+        // 安全な乱数の生成 定数値は確認すること
+        //const array = new Uint8Array(BooksConst.RIMACOMI_CODE_VERIFIER_LENGTH);
+        const array = new Uint8Array(10);
+        crypto.getRandomValues(array);
+        // `codeVerifier`の作成 エンコードするメソッドは以下を参照のこと
+        const codeVerifier = base64urlencode(array);
+
+        // セッションストレージへの保存
+        //sessionStorage.setItem('code_verifier', codeVerifier);
+
+        // `code_challenge` の生成
+        // const encoder = new TextEncoder();
+        // const data = encoder.encode(codeVerifier);
+        // // `codeChallenge` の文字列を返却
+        // return window.crypto.subtle.digest('SHA-256', data)
+        //     .then(digest => {
+        //         //const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(digest)));
+        //         const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(digest)));
+        //         console.log("base64の値:" + base64);
+        //         return base64urlencode(base64);
+        //     });
+        const encoder = new TextEncoder();
+const data = encoder.encode(codeVerifier);
+return window.crypto.subtle.digest('SHA-256', data)
+  .then(digest => {
+    // ArrayBuffer を Uint8Array に変換し、文字列に変換
+    const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(digest)));
+    return base64urlencode(base64);
+  })
+  .catch(error => {
+    console.error('Error generating code challenge:', error);
+    return Promise.reject(error);
+  });
+
+    }
+
+    // base64 URLエンコードするメソッド
+    function base64urlencode(str) {
+        return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+
+
+    // step②.上の6つの値を元にして、Serviceクラス同様に集英社のURLを作成するメソッドを作成
+    // 引数が少し違うだけで、基本的に同じ処理とする。
+    // `mailAddres` と `gaパラメータ` 必要ない
+    
+    /**
+     * STEP②-1.createShueishaUrlメソッドをjs化する
+     * 
+     * 集英社IDの会員登録画面への遷移URLを生成する
+     * @param shueishaUrl 集英社IDのURL
+     * @param domain ドメイン
+     * @param referrer リダイレクト先パス
+     * @param codeChallenge コードチャレンジ
+     * @param gaParameter ?_gl=以降のGAパラメータ
+     * @return 生成後のURL
+     */
+    function createShueishaUrl(callback, shueishaUrl, domain, mailaddress, referrer, gaParameter, codeChallenge) {
+        let callbackUrl;
+
+        // ここの分岐も ログインまでで良い？ 
+        switch (callback) {
+            case "SIGNUP":
+                callbackUrl = callbackSignUpUrl;
+                break;
+            case "LOGIN":
+                callbackUrl = callbackLoginUrl;
+                break;
+            case "USERINFO":
+                callbackUrl = callbackUserInfoUrl;
+                break;
+            case "MAILADDRESS":
+                callbackUrl = callbackMailAddressUrl;
+                break;
+            case "PASSWORD":
+                callbackUrl = callbackPasswordUrl;
+                break;
+            case "WITHDRAWAL":
+                callbackUrl = callbackWithdrawalUrl;
+                break;
+            default:
+                callbackUrl = callbackSignUpUrl;
+                break;
+        }
+
+        try {    
+            return createBaseShueishaUrl(shueishaUrl, domain, codeChallenge, mailaddress, referrer, gaParameter ,callbackUrl);
+        } catch (error) {
+            // TODO エラーの処理はどうするか？
+            console.error("Error create Shueisha URL:", error);
+            return "error";
+        }
+    }
+
+
+
+    /**
+     * STEP②-2.createShueishaUrlメソッドをjs化する
+     * 
+     * 集英社IDへのリダイレクト先URLのベース生成
+     * @param shueishaUrl
+     * @param domain
+     * @param codeChallenge
+     * @param callbackUrl
+     * @return
+     */
+    function createBaseShueishaUrl(shueishaUrl, domain, codeChallenge, mailAddress, referrer, gaParameter, callbackUrl) {
+        const url = new URL(shueishaUrl);
+
+        // jsはが null または ""(空欄)の時は自動的にfalseの判定になる。ある意味便利。
+        if (mailAddress) {
+            url.searchParams.append('email', encodeURIComponent(mailAddress));
+            url.searchParams.append('callback', encodeURIComponent(domain + callbackUrl));
+        } else {
+            url.searchParams.append('callback', encodeURIComponent(domain + callbackUrl));
+        }
+
+        // rimacomiplus.jp/直前のURL
+        if (referrer) {
+            url.searchParams.append('redirect_to', encodeURIComponent(referrer));
+        }
+
+        url.searchParams.append('code_challenge', codeChallenge);
+
+        // 削除予定
+        if (gaParameter) {
+            url.searchParams.append('_gl', gaParameter);
+        }
+
+        return url.toString();
+    }
+
+    
+    //step③.リンク書き換えのために必要な値とメソッドの準備が整ったので、URLの書き換え処理を開始する
+
+    /**
+     * STEP③.リンクURLを書き換えます.
+     */    
+    document.addEventListener('DOMContentLoaded', function () {
+        // htmlドキュメントを読み込み後、urlの書き換え対象となるhtml要素があるか確認する
+        const targetLinks = document.querySelectorAll('.target-shueisya-login-link');
+        //const targetLink = document.querySelectorAll('.target-shueisya-link signup');
+
+        console.log("対象の要素数: " + targetLinks.length);
+
+        if (targetLinks.length > 0) {
+            // 取得した要素それぞれに対して処理を行う
+            targetLinks.forEach(targetLink => {
+                // href属性の取得
+                const currentHref = targetLink.href;
+                console.log('現在のhref:', currentHref);
+
+                // href属性の書き換えを行うための値を用意する
+                // ドメインの用意
+                let currentUrl = window.location.href;
+                let domain = new URL(currentUrl).hostname;
+                console.log("domainの値: "+domain);
+
+                // referrerの用意
+                let refferer = currentUrl;
+                console.log("refferer(リダイレクト先)の値: "+refferer);
+
+                // codechallengeの作成
+                let codeChallenge = generateCodeChallenge();
+                console.log("codeChallengeの値: "+codeChallenge);
+
+                // すべての値を使用してURLを作成する
+                let shueishaLoginUrl = createShueishaUrl(
+                    callback.LOGIN, ShueishaLink.LOGIN, domain, null, refferer, null, codeChallenge);
+
+                    console.log("shueishaLoginUrlの値: " + shueishaLoginUrl);
+
+                targetLink.href = shueishaLoginUrl;
+            });
+        }
+
+    });
+
+
+</script>
