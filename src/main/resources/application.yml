@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: angularDemo
+  server:
+    port: 8080
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb?createDatabaseIfNotExist=true
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+

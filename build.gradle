@@ -25,16 +25,29 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// springBootのV3系のjdbcドライバ依存関係
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	// springBootのv2系は以下の記述になる模様 v3になり記述が変わった
+	// runtimeOnly 'mysql:mysql-connector-java'
+
+    // dockerでDBを設定して立ち上げる時はh2関連の記述を消す 埋め込みtomcatを使用する場合は以下の依存関係を使用すること
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// h2db使用する場合は以下の記述で立ち上がる
+	//runtimeOnly 'com.h2database:h2'
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	//implementation コンパイル時と実行時に必要な依存関係の指定
+	//runtimeOnly 実行時にのみ必要な依存関係
+	//providedRuntime 実行環境によって提供される依存関係を指定
+
 }
 
 tasks.named('test') {
