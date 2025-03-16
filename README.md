@@ -2,13 +2,16 @@
 本プロジェクトはフロントがReact、バックエンドにspringBootを使用した練習用プロジェクトです。
 2025年の1月から開始するコミチのプロジェクトに参画するにあたり、必要な学習内容をまとめたものです。
 AWSで動かすことも目的の1つとしているため、AWSのソースも追加しています。
-このアプリケーションのgitURLは以下の通りです
+
+
+# gitのURL
+このアプリケーションのgitURLは以下のとおり
 https://github.com/teruhisashibuya71/reactDemo/tree/master
 
 # アプリケーションの起動
 ## Gradleを使用した起動
 ```
-gradle bootrun
+./gradlew bootrun
 ```
 ※ビルドして実行される
 
