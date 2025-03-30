@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列挙型のテスト</title>
+</head>
+<body>
+<h1>列挙型テストページ</h1>
+<p>これは列挙型テストページのコンテンツのプレースホルダーです。</p>
+
+<ul>
+    <li th:each="category : ${categoryEnumList}">
+        <span th:text="${category}"></span>
+    </li>
+</ul>
+
+
+<th:block th:if="${categoryEnumList.size() > 0}">
+    <li th:each="category : ${categoryEnumList}">
+
+        <p>${category.name()}の値</p>
+        <span th:text="${category.name()}"></span>
+        <span th:if="${category.name()} == 'HOGE'">文字列のHOGEですよ</span>
+
+        <p>${category.getKomojiValue()}の値</p>
+        <span th:text="${category.getKomojiValue()}"></span>
+
+        <p>${category.getNumber()}の値</p>
+        <span th:text="${category.getNumber()}"></span>
+
+        <p>--------------------------------------------</p>
+    </li>
+
+</th:block>
+
+</body>
+</html>

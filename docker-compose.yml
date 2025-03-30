@@ -1,5 +1,15 @@
-version: '3.8'
 services:
+  nginx-local:
+    build: ./docker/nginx-local
+    container_name: my-nginx
+    volumes:
+      - ./docker/nginx-local/my-conf:/my-conf/nginx # ローカルのnginxの設定ファイルをドッカーコンテナの `/etc/nginx` にマウント
+      - ./certs:/etc/nginx/certs
+      #- /etc/nginx/ssl/server.crt:/etc/nginx/ssl/server.crt
+      #- /etc/nginx/ssl/server.key:/etc/nginx/ssl/server.key
+    ports:
+      - 80:80
+      - 443:443
   db:
     image: mysql:8.0
     environment:
@@ -7,7 +17,17 @@ services:
       MYSQL_DATABASE: mydb
     ports:
       - "3306:3306" # ローカルのポート3306をドッカーの3306に接続する
-    volumes:
-      - mysql-data:/var/lib/mysql
-volumes:
-  mysql-data:
+#
+#  frontend:volumes:
+##      - mysql-data:/var/lib/mysql
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "80:80"
+#    depends_on:
+#      - db # backendを削除
+#    volumes:
+#      - ./frontend/static:/usr/share/nginx/html
+#volumes:
+#  mysql-data:

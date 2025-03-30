@@ -34,7 +34,6 @@ public class UserController {
      * @param model
      * @return
      */
-    
     @GetMapping("/all")
     public String showAllUser(Model model){
 

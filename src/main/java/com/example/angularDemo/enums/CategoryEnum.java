@@ -2,6 +2,9 @@ package com.example.angularDemo.enums;
 
 import lombok.Data;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * テスト用のenumです
  *
@@ -23,7 +26,6 @@ public enum CategoryEnum {
     /** 2つめの値 */
     private Integer number;
 
-
     /**
      * enumにコンストラクタは必須
      *
@@ -35,19 +37,29 @@ public enum CategoryEnum {
         this.number = number;
     }
 
+    public String getKomojiValue() {
+        return komojiValue;
+    }
     public void setKomojiValue(String komojiValue) {
         this.komojiValue = komojiValue;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public Integer getNumber() {
         return number;
     }
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
-    public String getKomojiValue() {
-        return komojiValue;
+
+
+
+    /**
+     * enumの値をすべて取得するメソッド
+     *
+     * @return すべてのenumの値
+     */
+    public static List<CategoryEnum> getAllValues() {
+        return Arrays.asList(CategoryEnum.values());
     }
 }

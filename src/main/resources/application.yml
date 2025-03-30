@@ -1,6 +1,6 @@
 spring:
   application:
-    name: angularDemo
+    name: comici_angularDemo
   server:
     port: 8080
   datasource:
