@@ -48,8 +48,8 @@ dependencies {
     // dockerでDBを設定して立ち上げる時はh2関連の記述を消す 埋め込みtomcatを使用する場合は以下の依存関係を使用すること
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// h2db使用する場合は以下の記述で立ち上がる
-	//runtimeOnly 'com.h2database:h2'
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	runtimeOnly 'com.h2database:h2'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
 	//implementation コンパイル時と実行時に必要な依存関係の指定
 	//runtimeOnly 実行時にのみ必要な依存関係
