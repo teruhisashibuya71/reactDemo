@@ -202,6 +202,7 @@ public class TestUserServiceImplTest {
             userServiceImpl.deleteUser(1L);
         });
 
+        // テスト
         assertEquals(notFoundEx.getMessage(), expectedMessage);
     }
 }
