@@ -1,7 +1,9 @@
 package com.example.angularDemo.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.example.angularDemo.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.angularDemo.controller.form.UserForm;
@@ -46,6 +48,17 @@ public class TestUserServiceImpl implements TestUserService {
      */
     @Override
     public void deleteUser(Long id){    
-        userRepository.deleteById(id);
+
+        // 削除フラグを立てる
+        Optional<TestUser> data = userRepository.findById(id);
+        // TODO Optionalはnullを許容するため、isEmpty()でnullチェック
+        if (data.isEmpty()) {
+            //throw new RuntimeException("User not found");
+            throw new NotFoundException("User not found");
+        } else {
+            data.get().setDeleted(true);
+            userRepository.save(data.get());
+        }
+
     }
 }

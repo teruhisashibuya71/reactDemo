@@ -115,9 +115,10 @@ public class UrlTestModelService {
     public String findByIdWithNoSuchAlgorithmException(Long id) throws NoSuchAlgorithmException {
 
         // Nosuchが発生するメソッドを呼ぶ
-        byte[] bytes = EncodeUtil.makeHashString("test","test");
+        //byte[] bytes = EncodeUtil.makeHashString("test","test");
 
-        return "test";
+        throw new NoSuchAlgorithmException();
+        //return "test";
     }
 
 

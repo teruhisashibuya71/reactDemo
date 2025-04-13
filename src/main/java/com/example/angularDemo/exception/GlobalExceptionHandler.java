@@ -56,15 +56,20 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    //public ResponseEntity<String> handleNoneCheckIllegalEx(IllegalArgumentException IllegalEx) {
     public String handleNoneCheckIllegalEx(IllegalArgumentException IllegalEx, Model model) {
         System.out.println("Illegal Argument Exception を検知しました: " + IllegalEx.getMessage());
         // viewではなくレスポンスエンティティなので、以下のテキストが画面に表示されます
         //return new ResponseEntity<>("Conglaturation! We Get IllegalException: " + IllegalEx.getMessage(), HttpStatus.BAD_REQUEST);
-
         model.addAttribute("errorMessage", "Illegal Argument Exception を検知しました");
+
         return "error";
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public String handleNotFoundEx(NotFoundException notFoundEx, Model model) {
+        System.out.println("Not Found Exception を検知しました: " + notFoundEx.getMessage());
+        model.addAttribute("errorMessage", "Not Found Exception を検知しました");
 
+        return "error";
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * URLテストモデルのコントローラー
@@ -89,14 +90,23 @@ public class UrlTestModelController implements ModelTestController {
      * @return
      */
     @GetMapping("/nosuchalgorithm")
-    // interfaceを実装していると
-    //public String wayOfNoSuchAlgorithmException(Model model) {
-        public String wayOfNoSuchAlgorithmException(Model model) {
+    // interfaceを実装していると throews句かけないかな?
+    // コントローラでthrowsした NoSuchAlgorithmException は、ハンドラーで処理される
+    public String wayOfNoSuchAlgorithmException(Model model) throws NoSuchAlgorithmException {
+        //public String wayOfNoSuchAlgorithmException(Model model) {
 
+        // try catch使わない場合
         //Serviceクラスでチェック例外であるNoSuchAlgorithmExceptionが発生する
         UrlService.findByIdWithNoSuchAlgorithmException(4L);
         // TODO コントローラーのメソッドにthrows句を付与する場合、OPEN-APIで生成するinterfaceファイルにthrows句が付与されるようにしなくてはいけない
 
+
+//        try {
+//            UrlService.findByIdWithNoSuchAlgorithmException(4L);
+//        } catch (NoSuchAlgorithmException alEx) {
+//            controllerでcatchした場合は、大抵log出力してerrorページを返却することになる
+//
+//        }
 
         model.addAttribute("methodName", "wayOfNoSuchAlgorithmExceptionメソッドより遷移");
         return "home";

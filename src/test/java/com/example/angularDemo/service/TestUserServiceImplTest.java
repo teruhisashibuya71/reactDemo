@@ -1,14 +1,15 @@
 package com.example.angularDemo.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.example.angularDemo.controller.form.UserForm;
+import com.example.angularDemo.exception.NotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -151,11 +152,48 @@ public class TestUserServiceImplTest {
     }
 
     /**
-     * 対象のユーザーデータを削除するテスト
+     * 対象のユーザーデータを削除するテスト (正常系)
      */
     @Test
+    @DisplayName("削除処理のテスト (正常系)")
     void deleteTargetUser() {
 
+        //削除用のデータ作成する
+        TestUser testData = new TestUser();
+        testData.setId(1L);
+        testData.setName("シブヤ");
+        testData.setAge(38);
+        testData.setDeleted(false);
+
+        // 定義したデータを取得する処理 JPAのfindByIdメソッドはOptionalを返すので、Optionalでラップする
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testData));
+        // TestUserクラスのオブジェクトを引数にしてsaveメソッドが走った場合、saveしたデータ自体を返すように設定
+        // TODO 一言でいうと `saveメソッド度に戻り値を設定するための記述`
+        when(userRepository.save(any(TestUser.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // 削除処理をテストする
+        userServiceImpl.deleteUser(1L);
+
+        //削除処理フラグがtrueになっているか確認する 呼ばれた回数が一致するかも確認する
+        assertEquals(true, testData.isDeleted());
+
+        // 以下の処理はsaveメソッドが1回だけ呼ばれたことを確認している。
+        // 以下の内容は記述しなくても良さそう。 もし記述するなら、すべてのメソッドに記述する必要が出てくる
+        //verify(userRepository, times(1)).save(testData);
     }
 
+    /**
+     * 対象のユーザーデータを削除するテスト (異常系)
+     */
+    @Test
+    @DisplayName("削除処理のテスト (異常系)")
+    void deleteErrorTargetUser() {
+
+        // データが取得できないモック設定を定義する
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        // 削除処理を実行し、例外が発生することを確認する
+        NotFoundException notFoundEx = assertThrows(NotFoundException.class, () -> {
+            userServiceImpl.deleteUser(1L);
+        });
+    }
 }
