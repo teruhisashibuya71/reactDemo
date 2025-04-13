@@ -189,7 +189,11 @@ public class TestUserServiceImplTest {
     @DisplayName("削除処理のテスト (異常系)")
     void deleteErrorTargetUser() {
 
-        // データが取得できないモック設定を定義する
+        // TODO 自作のread処理はnullを返すので、thenReturnはnullをセットすれば良い
+        //when(userRepository.findById(1L)).thenReturn(null);
+
+        // 取得できないモック設定を定義する
+        // TODO 通常のJPAのメソッドでデータを取得する場合はnullセーフなので、データが無い場合はemptyを返す
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
         // 削除処理を実行し、例外が発生することを確認する
         NotFoundException notFoundEx = assertThrows(NotFoundException.class, () -> {
