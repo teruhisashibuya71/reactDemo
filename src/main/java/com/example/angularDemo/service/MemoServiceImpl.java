@@ -83,16 +83,25 @@ public class MemoServiceImpl implements MemoService {
     public void checkDataFix(Customer cus, Memo memo) {
 
         Customer customerData = customerRepository.findById(cus.getId()).orElse(null);
-        Memo memoData = memoRepository.findById(memo.getId()).orElse(null);
 
-        if (customerData != null && memoData != null) {
-            System.out.println("checkData: 両方ともNULLでない");
-        }
-
-        // 以下の1行がある場合は、
+        // 以下の1行がある場合は、各メソッドチェーンがnullにならないようにｓるため、テストメソッドに書くプログラム量が多くなる
         customerData.getMemos().get(0).getDetail().getDescription();
-
     }
+
+    /**
+     * LocaDateTimeのgetNow() メソッドのテストを実施することが目的のメソッド
+     */
+    @ReadOnlyProperty
+    public LocalDateTime checkNowMethod() {
+
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("現在の日時: " + now);
+        return now;
+    }
+
+
+
+
 
 
     @Override

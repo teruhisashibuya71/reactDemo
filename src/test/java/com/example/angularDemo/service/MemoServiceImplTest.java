@@ -1,6 +1,7 @@
 package com.example.angularDemo.service;
 
 import com.example.angularDemo.model.Customer;
+import com.example.angularDemo.model.Detail;
 import com.example.angularDemo.model.Memo;
 import com.example.angularDemo.repository.CustomerRepository;
 import com.example.angularDemo.repository.MemoRepository;
@@ -13,6 +14,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -233,6 +237,114 @@ class MemoServiceImplTest {
     }
 
 
+    /**
+     * ネストする親クラスの名前は `test` + `テスト対象のメソッド名` とする
+     */
+    @Nested
+    @DisplayName("checkDataFixメソッドのテスト")
+    class testCheckDataFix {
+
+        @Test
+        @DisplayName("正常系 : メソッドチェーンのモック挙動設定済み")
+        void testMethodChain(){
+
+            // メソッドチェーンの各要素をmockで定義 (全部 new して実態を用意すれば、メソッドチェーンの記述をする必要がないので記述量が少ないケースが多い)
+            Customer mockedCustomer = mock(Customer.class);
+            List<Memo> mockedMemoList = mock(List.class);
+            Memo mockedMemo = mock(Memo.class);
+            Detail mockedDetail = mock(Detail.class);
+            mockedMemo.setDetail(mockedDetail);
+            mockedMemoList.add(mockedMemo);
+
+            // TODO 各メソッドチェーンの挙動を段階別にモック化しておく必要がある
+            when(mockedCustomer.getMemos()).thenReturn(mockedMemoList);
+            when(mockedMemoList.get(0)).thenReturn(mockedMemo);
+            when(mockedMemoList.get(0).getDetail()).thenReturn(mockedDetail);
+
+            // thenReturnの引数に anyOOO()は使用不可
+              // anyOOO()は引数のマッチングを行うために使用するもの
+              // TODO よって、thenReturn句の `戻り値` としては使用できない
+            when(mockedDetail.getDescription()).thenReturn("メモの詳細");
+            // 右の記述はエラー when(mockedDetail.getDescription()).thenReturn(anyString());
+
+
+            // DBアクセス時の返却データにmockedCustomerを設定
+            when(customerRepository.findById(anyLong())).thenReturn(Optional.of(mockedCustomer));
+
+
+            // テスト対象のメソッドを呼び出す
+            Customer customerData = mock(Customer.class);
+            Memo memoData = mock(Memo.class);
+            memoService.checkDataFix(customerData, memoData);
+
+            // アサーション
+            //assertEquals("テストの説明", description);
+        }
+
+
+        @Test
+        @DisplayName("正常系 : 実物データを静止した場合のテストプログラム ")
+        void testBy_makeActualData(){
+
+            // メソッドチェーンの各要素をmockで定義 (全部 new して実態を用意すれば、メソッドチェーンの記述をする必要がないので記述量が少ないケースが多い)
+            Customer mockedCustomer = mock(Customer.class);
+            List<Memo> mockedMemoList = mock(List.class);
+            Memo mockedMemo = mock(Memo.class);
+            Detail mockedDetail = mock(Detail.class);
+            mockedMemo.setDetail(mockedDetail);
+            mockedMemoList.add(mockedMemo);
+
+            // TODO 各メソッドチェーンの挙動を段階別にモック化しておく必要がある
+            when(mockedCustomer.getMemos()).thenReturn(mockedMemoList);
+            when(mockedMemoList.get(0)).thenReturn(mockedMemo);
+            when(mockedMemoList.get(0).getDetail()).thenReturn(mockedDetail);
+
+            // thenReturnの引数に anyOOO()は使用不可
+            // anyOOO()は引数のマッチングを行うために使用するもの
+            // TODO よって、thenReturn句の `戻り値` としては使用できない
+            when(mockedDetail.getDescription()).thenReturn("メモの詳細");
+            // 右の記述はエラー when(mockedDetail.getDescription()).thenReturn(anyString());
+
+
+            // DBアクセス時の返却データにmockedCustomerを設定
+            when(customerRepository.findById(anyLong())).thenReturn(Optional.of(mockedCustomer));
+
+
+            // テスト対象のメソッドを呼び出す
+            Customer customerData = mock(Customer.class);
+            Memo memoData = mock(Memo.class);
+            memoService.checkDataFix(customerData, memoData);
+
+            // アサーション
+            //assertEquals("テストの説明", description);
+        }
+    }
+
+
+    /**
+     * LocalDateTImeの処理をテストするためのメソッド
+     */
+    @Test
+    @DisplayName("getNowをテストする")
+    void testCheckNowMethod(){
+
+        // 固定化したい日時
+        LocalDateTime fixedDateTime = LocalDateTime.of(2025, 4, 28, 12, 0, 0);
+
+        //staticメソッドであるgetNowをモック化する
+        try (final var localDateTime = Mockito.mockStatic(LocalDateTime.class)) {
+            //localDateTime.when(LocalDateTime::now).thenReturn(LocalDateTime.of(2025, 4, 28, 12, 0, 0));
+            localDateTime.when(LocalDateTime::now).thenReturn(fixedDateTime);
+
+             LocalDateTime targetTime = memoService.checkNowMethod();
+
+             //assertEquals(targetTime, LocalDateTime.of(2025, 4, 28, 12, 0, 0));
+            // 期待値 , 実際の値
+            assertEquals(fixedDateTime, targetTime);
+
+        }
+
+    }
 
 
 
