@@ -3,7 +3,11 @@ package com.example.angularDemo.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.angularDemo.model.Customer;
+import com.example.angularDemo.repository.CustomerRepository;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.stereotype.Service;
 
 import com.example.angularDemo.model.Memo;
@@ -17,9 +21,79 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemoServiceImpl implements MemoService {
 
-
     /** RequiredArgsConstructorで対応する場合は「final」 付与すること */
     private final MemoRepository memoRepository;
+    private final CustomerRepository customerRepository;
+
+
+    @Transactional
+    public Memo updateMemoAndCustomerInfo(Customer cus, Memo memo) {
+
+        //顧客情報とメモ情報の両方を更新する
+        Customer customerData = customerRepository.findById(cus.getId()).orElse(null);
+        if (customerData == null) {
+            return null;
+        }
+        customerData.setName(cus.getName());
+        customerData.setEmail(cus.getEmail());
+        customerRepository.save(customerData);
+
+
+        // 続いて メモ情報を更新する
+        Memo memoData = memoRepository.findById(memo.getId()).orElse(null);
+        if (memoData == null) {
+            return null;
+        }
+        memoData.setContent(memo.getContent());
+        memoData.setUpdatedAt(LocalDateTime.now());
+        Memo updatedMemo = memoRepository.save(memoData);
+
+        if (customerData != null && memoData != null) {
+            System.out.println("updateMemoAndCustomerInfo: 両方ともNULLでない");
+        }
+
+        return updatedMemo;
+    }
+
+
+    /**
+     * if文の切り替え
+     * @param cus
+     * @param memo
+     */
+    @ReadOnlyProperty
+    public void checkData(Customer cus, Memo memo) {
+
+        Customer customerData = customerRepository.findById(cus.getId()).orElse(null);
+        Memo memoData = memoRepository.findById(memo.getId()).orElse(null);
+
+        if (customerData != null && memoData != null) {
+            System.out.println("checkData: 両方ともNULLでない");
+        }
+
+    }
+
+
+    /**
+     * if文の切り替え
+     * @param cus
+     * @param memo
+     */
+    @ReadOnlyProperty
+    public void checkDataFix(Customer cus, Memo memo) {
+
+        Customer customerData = customerRepository.findById(cus.getId()).orElse(null);
+        Memo memoData = memoRepository.findById(memo.getId()).orElse(null);
+
+        if (customerData != null && memoData != null) {
+            System.out.println("checkData: 両方ともNULLでない");
+        }
+
+        // 以下の1行がある場合は、
+        customerData.getMemos().get(0).getDetail().getDescription();
+
+    }
+
 
     @Override
     public List<Memo> getAllMemos() {
@@ -76,7 +150,6 @@ public class MemoServiceImpl implements MemoService {
         }
     }
 
-
     /**
      * 削除処理
      * @param id
@@ -84,4 +157,6 @@ public class MemoServiceImpl implements MemoService {
     public void deleteMemo(Long id) {
         memoRepository.deleteById(id);
     }
+
+
 }

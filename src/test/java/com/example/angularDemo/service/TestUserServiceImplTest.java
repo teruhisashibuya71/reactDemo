@@ -175,7 +175,7 @@ public class TestUserServiceImplTest {
         userServiceImpl.deleteUser(1L);
 
         //削除処理フラグがtrueになっているか確認する 呼ばれた回数が一致するかも確認する
-        assertEquals(true, testData.isDeleted());
+        assertTrue(testData.isDeleted());
 
         // 以下の処理はsaveメソッドが1回だけ呼ばれたことを確認している。
         // 以下の内容は記述しなくても良さそう。 もし記述するなら、すべてのメソッドに記述する必要が出てくる

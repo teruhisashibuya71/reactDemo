@@ -1,13 +1,24 @@
 spring:
-  application:
-    name: comici_angularDemo
-  server:
-    port: 8080
   datasource:
-    url: jdbc:mysql://localhost:3306/mydb?createDatabaseIfNotExist=true
-    username: root
-    password: password
+    url: jdbc:h2:mem:mydb # jdbc:h2:mem:mydb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
+# docker側の設定 portは3306です
+#spring:
+#  application:
+#    name: angularDemo
+#  server:
+#    port: 8080
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/mydb?createDatabaseIfNotExist=true
+#    username: root
+#    password: password
+#  jpa:
+#    hibernate:
+#      ddl-auto: update

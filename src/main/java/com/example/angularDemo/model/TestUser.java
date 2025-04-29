@@ -25,6 +25,7 @@ public class TestUser {
 
     private boolean isDeleted;
 
+    // Memoとのつながり
 
 //    public void setId(long id) {
 //        this.id = id;

@@ -2,10 +2,7 @@ package com.example.angularDemo.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**
@@ -18,9 +15,7 @@ import lombok.Data;
 @Data
 public class Memo {
 
-    /**
-     * JPA用の記述忘れないこと
-     */
+    /** JPA用の記述忘れないこと */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +25,17 @@ public class Memo {
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;
+
+    // Memoモデルとのつながりを設定
+    // 接続するための外部キーをnameに設定する
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @OneToOne
+    @JoinColumn(name = "detail_id")
+    private Detail detail;
+
 
     public Memo(){}
 
